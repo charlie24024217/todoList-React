@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import TodoList from "./components/TodoList";
+import "./style.css";
+import { ThemeProvider } from "@emotion/react";
+
+const theme = {
+  pink: {
+    color: "#ff4384",
+    backgroundColor: "#ffedf7",
+  },
+  blue: {
+    color: "#00a7ff",
+    backgroundColor: "#e5f3ff",
+  },
+};
 
 function App() {
+  const CounterStatus = {
+    workTime: true,
+    start: false,
+  };
+  const [workTime, setWorkTime] = useState(CounterStatus.workTime);
+  const [start, setStart] = useState(CounterStatus.start);
+  const [currentTheme, setCurrentTheme] = useState("pink");
+
+  useEffect(() => {
+    setCurrentTheme(workTime ? "pink" : "blue");
+  }, [workTime]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme[currentTheme]}>
+      <TodoList
+        workTime={workTime}
+        setWorkTime={setWorkTime}
+        start={start}
+        setStart={setStart}
+      />
+    </ThemeProvider>
   );
 }
 
